@@ -6,6 +6,8 @@
 // The editor creator to use.
 import InlineEditorBase from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
 
+import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import UploadAdapter from '@ckeditor/ckeditor5-adapter-ckfinder/src/uploadadapter';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -27,6 +29,73 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Table from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+
+//Delete Icon 
+import deleteIcon from '../src/delete.svg';
+import upIcon from '../src/up.svg';
+import downIcon from '../src/down.svg';
+
+//Button UI
+import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
+
+
+class Delete extends Plugin {
+    init() {
+		const editor =this.editor;
+		editor.ui.componentFactory.add('deleteItem', locale => {
+			const view = new ButtonView (locale);
+			view.set({
+				label:'Delete Item',
+				icon: deleteIcon ,
+				tooltip: true
+			});
+
+			view.on('execute',() => {
+				console.log("Delete button was clicked !");
+			});
+			return view ;
+		});
+
+    }
+}
+class Up extends Plugin {
+    init() {
+		const editor =this.editor;
+		editor.ui.componentFactory.add('upItem', locale => {
+			const view = new ButtonView (locale);
+			view.set({
+				label:'Move Up',
+				icon: upIcon ,
+				tooltip: true
+			});
+
+			view.on('execute',() => {
+				console.log("Up button was clicked !");
+			});
+			return view ;
+		});
+
+    }
+}
+class Down extends Plugin {
+    init() {
+		const editor =this.editor;
+		editor.ui.componentFactory.add('downItem', locale => {
+			const view = new ButtonView (locale);
+			view.set({
+				label:'Move down',
+				icon: downIcon ,
+				tooltip: true
+			});
+
+			view.on('execute',() => {
+				console.log("Down button was clicked !");
+			});
+			return view ;
+		});
+
+    }
+}
 
 export default class InlineEditor extends InlineEditorBase {}
 
@@ -52,41 +121,22 @@ InlineEditor.builtinPlugins = [
 	Paragraph,
 	PasteFromOffice,
 	Table,
-	TableToolbar
+	TableToolbar,
+	Delete,
+	Up,
+	Down
 ];
 
 // Editor configuration.
 InlineEditor.defaultConfig = {
 	toolbar: {
 		items: [
-			'heading',
-			'|',
 			'bold',
 			'italic',
-			'link',
-			'bulletedList',
-			'numberedList',
-			'imageUpload',
-			'blockQuote',
-			'insertTable',
-			'mediaEmbed',
-			'undo',
-			'redo'
-		]
-	},
-	image: {
-		toolbar: [
-			'imageStyle:full',
-			'imageStyle:side',
 			'|',
-			'imageTextAlternative'
-		]
-	},
-	table: {
-		contentToolbar: [
-			'tableColumn',
-			'tableRow',
-			'mergeTableCells'
+			'deleteItem',
+			'upItem',
+			'downItem'
 		]
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
